@@ -1,0 +1,55 @@
+/**
+* Breakpoints
+* * * * * * * * * * * *
+* usage
+* @media @mobile, @tablet_portrait {}
+* @media @tablet_landscape_and_smaller {}
+*/
+
+@break_mobile: 0px;
+@break_mobile_small: 320px;
+@break_tablet_portrait: 768px;
+@break_tablet_landscape: 1024px;
+@break_desktop: 1330px;
+@break_desktop_wide: 1640px;
+
+@break_max_mobile: @break_mobile - 1;
+@break_max_mobile_small: @break_mobile_small - 1;
+@break_max_tablet_portrait: @break_tablet_portrait - 1;
+@break_max_tablet_landscape: @break_tablet_landscape - 1;
+@break_max_desktop: @break_desktop - 1;
+
+/**
+* types
+*/
+@print: ~"print";
+@highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
+							~"only screen and (min--moz-device-pixel-ratio: 1.5)",
+							~"only screen and (-o-min-device-pixel-ratio: 3/2)",
+							~"only screen and (min-device-pixel-ratio: 1.5)";
+
+/**
+* between
+*/
+@mobile: ~"screen and (max-width: @{break_max_tablet_portrait})";
+@mobile_small: ~"screen and (max-width: @{break_mobile_small})"; // iphone 5/SE
+@tablet_portrait: ~"screen and (min-width: @{break_tablet_portrait}) and (max-width: @{break_max_tablet_landscape})";
+@tablet_landscape: ~"screen and (min-width: @{break_tablet_landscape}) and (max-width: @{break_max_desktop})";
+@desktop: ~"screen and (min-width: @{break_desktop})";
+@desktop_wide: ~"screen and (min-width: @{break_desktop_wide})";
+
+/**
+* bigger
+*/
+//@mobile_and_bigger: ~"screen and (min-width: @{break_mobile})";
+@tablet_portrait_and_bigger: ~"screen and (min-width: @{break_tablet_portrait})";
+@tablet_landscape_and_bigger: ~"screen and (min-width: @{break_tablet_landscape})";
+@desktop_and_bigger: ~"screen and (min-width: @{break_desktop})";
+
+// /**
+// * smaller
+// */
+// @mobile_and_smaller: ~"screen and (max-width: @{break_max_mobile})";
+// @tablet_portrait_and_smaller: ~"screen and (max-width: @{break_max_tablet_portrait})";
+// @tablet_landscape_and_smaller: ~"screen and (max-width: @{break_max_tablet_landscape})";
+// @desktop_and_smaller: ~"screen and (max-width: @{break_max_desktop})";
