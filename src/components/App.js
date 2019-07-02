@@ -34,14 +34,70 @@ const COURSES = [
   }
 ];
 
-class CoursesArchive extends React.Component {
+// function openFilter() {
+// 	if ( ! filter.$this.hasClass( 'is-open' ) ) {
+//
+//
+// 		scrollTop = $( window ).scrollTop();
+// 		$( '.js-container' ).css( { 'position': 'fixed', 'margin-top': -Math.abs( scrollTop ) } );
+// 		$( 'body' ).addClass( 'fixed' );
+// 		filter.$this.css( { 'visibility': 'visible' } );
+// 		setTimeout( function() {
+// 			filter.$this.addClass( 'is-open' );
+// 			filter.$this.icons.init( '.svg-icon' );
+// 		}, 300 );
+// 	}
+// };
+//
+// function closeFilter() {
+// 	if ( filter.$this.hasClass( 'is-open' ) ) {
+// 		filter.$this.removeClass( 'is-open' );
+// 		$( 'body' ).removeClass( 'fixed' );
+// 		$( '.js-container' ).removeAttr( 'style' );
+// 		$( window ).scrollTop( scrollTop );
+// 		setTimeout( function() {
+// 			filter.$this.removeAttr( 'style' );
+// 		}, 300 );
+// 	}
+// };
+
+class App extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isFilterOpen: false,
+    }
+    this.toggleFilter = this.toggleFilter.bind(this)
+    this.open = this.open.bind(this)
+    this.close = this.close.bind(this)
+  }
+
+  toggleFilter() {
+    this.setState( prevState => ({
+      isFilterOpen: !prevState.isFilterOpen
+    }))
+	}
+
+  open( e ) {
+    e.preventDefault()
+    this.toggleFilter()
+    // ...
+  }
+
+  close( e ) {
+    e.preventDefault()
+    this.toggleFilter()
+    // ...
+  }
+
   render() {
     return(
       <div>
         <div className="results">
     			<div className="center">
     				<ResultNumber />
-    				<OpenFilterBtn />
+    				<OpenFilterBtn open={this.open} />
     			</div>
     		</div>
         <div className="center">
@@ -55,7 +111,7 @@ class CoursesArchive extends React.Component {
     				<ResetFilterBtn />
     			</div>
     		</div>
-        <Filter />
+        <Filter close={this.close} shown={this.state.isFilterOpen} />
         <div className="center">
     			<div className="filter-loader js-filter-loader lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <FilterableCourses courses={COURSES} />
@@ -65,4 +121,4 @@ class CoursesArchive extends React.Component {
   }
 }
 
-export default CoursesArchive;
+export default App;

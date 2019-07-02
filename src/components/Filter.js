@@ -35,13 +35,16 @@ const FILTERITEMS = [
   },
 ];
 
+
+
 class Filter extends React.Component {
   render() {
-    return(
-      <div className="filter js-filter">
 
+    return(
+      <div className={`filter js-filter ${this.props.shown ? 'is-open' : ''}`}>
+        <h1>{this.props.shown ? 'true' : 'false'}</h1>
       	<div className="filter-top">
-          <CloseFilterBtn />
+          <CloseFilterBtn close={this.props.close} />
           <ResetFilterBtn />
       	</div>
 

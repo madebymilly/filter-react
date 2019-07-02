@@ -1,9 +1,9 @@
 import "./index.less";
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import CoursesArchive from './components/CoursesArchive'
+import App from './components/App'
 
 ReactDOM.render(
-	<CoursesArchive />,
+	<App />,
   document.getElementById('courses-archive')
 );
