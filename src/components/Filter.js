@@ -50,7 +50,7 @@ class Filter extends React.Component {
 
       	<div className="filter-scroll">
       		<div className="filter-inner">
-            <FilterGroups groups={FILTERITEMS} />
+            <FilterGroups groups={FILTERITEMS} activateFilterItem={this.props.activateFilterItem}/>
       		</div>
       	</div>
 

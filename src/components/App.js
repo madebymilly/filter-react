@@ -67,10 +67,13 @@ class App extends React.Component {
     super(props)
     this.state = {
       isFilterOpen: false,
+      activeItems: [],
     }
     this.toggleFilter = this.toggleFilter.bind(this)
+
     this.open = this.open.bind(this)
     this.close = this.close.bind(this)
+    this.handleActivatedFilterItems = this.handleActivatedFilterItems.bind(this)
   }
 
   toggleFilter() {
@@ -89,6 +92,20 @@ class App extends React.Component {
     e.preventDefault()
     this.toggleFilter()
     // ...
+  }
+
+  handleActivatedFilterItems( item ) {
+    //console.log(item)
+    //console.log(this.state.activeItems)
+
+// opsplitsen in add & remove!
+
+    let tempArray = this.state.activeItems
+    tempArray.unshift(item)
+    this.setState({
+  		activeItems: tempArray,
+  	})
+    console.log(this.state.activeItems)
   }
 
   render() {
@@ -111,7 +128,7 @@ class App extends React.Component {
     				<ResetFilterBtn />
     			</div>
     		</div>
-        <Filter close={this.close} shown={this.state.isFilterOpen} />
+        <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} />
         <div className="center">
     			<div className="filter-loader js-filter-loader lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <FilterableCourses courses={COURSES} />

@@ -15,7 +15,7 @@ class FilterGroups extends React.Component {
               <div className="filter-items">
                 {group.items.map(
                   (item, i) =>
-                    <FilterItem key={i} item={item} group={group.group} />
+                    <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem}/>
                 )}
               </div>
             </div>
