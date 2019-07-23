@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import CloseFilterBtn from './CloseFilterBtn'
 import ResetFilterBtn from './ResetFilterBtn'
 import FilterGroups from './FilterGroups'
+import FilterItem from './FilterItem'
 import ShowResultsBtn from './ShowResultsBtn'
+
 
 const FILTERITEMS = [
   {
@@ -40,6 +42,8 @@ const FILTERITEMS = [
 class Filter extends React.Component {
   render() {
 
+    const groups = FILTERITEMS;
+
     return(
       <div className={`filter js-filter ${this.props.shown ? 'is-open' : ''}`}>
         <h1>{this.props.shown ? 'true' : 'false'}</h1>
@@ -50,7 +54,20 @@ class Filter extends React.Component {
 
       	<div className="filter-scroll">
       		<div className="filter-inner">
-            <FilterGroups groups={FILTERITEMS} activateFilterItem={this.props.activateFilterItem}/>
+            <FilterGroups>
+              {groups.map(
+                (group, i) =>
+                  <div key={i} className="filter-block js-filter-block">
+                    <h6><span>{group.label}</span> <a href="#" className="icon open-filter-block js-open-filter-block">&gt;</a></h6>
+                    <div className="filter-items">
+                      {group.items.map(
+                        (item, i) =>
+                          <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem} />
+                      )}
+                    </div>
+                  </div>
+              )}
+            </FilterGroups>
       		</div>
       	</div>
 
@@ -62,5 +79,8 @@ class Filter extends React.Component {
     )
   }
 }
+
+// <FilterGroups groups={FILTERITEMS} activateFilterItem={this.props.activateFilterItem}/>
+// <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem}/>
 
 export default Filter;

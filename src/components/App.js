@@ -3,6 +3,7 @@ import Filter from './Filter'
 import ResultNumber from './ResultNumber'
 import OpenFilterBtn from './OpenFilterBtn'
 import FilterableCourses from './FilterableCourses'
+import Course from './Course'
 import ResetFilterBtn from './ResetFilterBtn'
 
 const COURSES = [
@@ -109,6 +110,9 @@ class App extends React.Component {
   }
 
   render() {
+
+    const courses = COURSES;
+
     return(
       <div>
         <div className="results">
@@ -131,11 +135,18 @@ class App extends React.Component {
         <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} />
         <div className="center">
     			<div className="filter-loader js-filter-loader lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-          <FilterableCourses courses={COURSES} />
+          <FilterableCourses>
+            {courses.map(
+              (course, i) =>
+                <Course key={i} course={course} />
+            )}
+          </FilterableCourses>
     		</div>
       </div>
     )
   }
 }
+
+// <FilterableCourses courses={COURSES} />
 
 export default App;
