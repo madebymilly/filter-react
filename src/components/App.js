@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Filter from './Filter'
 import ResultNumber from './ResultNumber'
 import OpenFilterBtn from './OpenFilterBtn'
-import FilterableCourses from './FilterableCourses'
+// import FilterableCourses from './FilterableCourses'
 import Course from './Course'
 import ResetFilterBtn from './ResetFilterBtn'
 
@@ -152,12 +152,10 @@ class App extends React.Component {
         <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} />
         <div className="center">
     			<div className={`filter-loader js-filter-loader lds-spinner ${this.state.isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-          <FilterableCourses>
-            {courses.map(
-              (course, i) =>
-                <Course key={i} course={course} />
-            )}
-          </FilterableCourses>
+          {courses.map(
+            (course, i) =>
+              <Course key={i} course={course} />
+          )}
     		</div>
       </div>
     )

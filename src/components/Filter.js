@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import CloseFilterBtn from './CloseFilterBtn'
 import ResetFilterBtn from './ResetFilterBtn'
-import FilterGroups from './FilterGroups'
+// import FilterGroups from './FilterGroups'
 import FilterItem from './FilterItem'
 import ShowResultsBtn from './ShowResultsBtn'
 
@@ -54,20 +54,18 @@ class Filter extends React.Component {
 
       	<div className="filter-scroll">
       		<div className="filter-inner">
-            <FilterGroups>
-              {groups.map(
-                (group, i) =>
-                  <div key={i} className="filter-block js-filter-block">
-                    <h6><span>{group.label}</span> <a href="#" className="icon open-filter-block js-open-filter-block">&gt;</a></h6>
-                    <div className="filter-items">
-                      {group.items.map(
-                        (item, i) =>
-                          <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem} />
-                      )}
-                    </div>
+            {groups.map(
+              (group, i) =>
+                <div key={i} className="filter-block js-filter-block">
+                  <h6><span>{group.label}</span> <a href="#" className="icon open-filter-block js-open-filter-block">&gt;</a></h6>
+                  <div className="filter-items">
+                    {group.items.map(
+                      (item, i) =>
+                        <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem} />
+                    )}
                   </div>
-              )}
-            </FilterGroups>
+                </div>
+            )}
       		</div>
       	</div>
 
