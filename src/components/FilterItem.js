@@ -18,7 +18,8 @@ class FilterItem extends React.Component {
 
   activateItem( e ) {
     e.preventDefault();
-    this.props.activateFilterItem( e.currentTarget );
+    const item = e.currentTarget;
+    this.props.activateFilterItem( item, item.dataset.filtergroup );
     this.toggleIsActive();
   }
 
@@ -30,7 +31,7 @@ class FilterItem extends React.Component {
       <div
         className={`filter-item js-filter-item ${this.state.isActive ? 'is-active' : ''}` }
         data-filter={item}
-        data-filter-group={this.props.group}
+        data-filtergroup={this.props.group}
         onClick={this.activateItem}>
         <label>
           <span className="checkbox"><span className="check"></span></span>
