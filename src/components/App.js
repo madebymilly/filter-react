@@ -6,61 +6,10 @@ import OpenFilterBtn from './OpenFilterBtn'
 import Course from './Course'
 import ResetFilterBtn from './ResetFilterBtn'
 
-// const COURSES = [
-//   {
-//     "post_id":40,
-//     "title":"Jeugdtoneel Brugklas",
-//     "url":"http://oscu.test/cursus/jeugdtoneel-brugklas/",
-//     "image":"http://oscu.test/content/uploads/2019/04/1920x1080-1-300x200.jpg",
-//     "image_alt":"",
-//     "groups":{
-//       "group1":["Theater"],
-//       "group2":["Jongeren"],
-//       "group3":["Woensdag","Vrijdag"],
-//       "group4":["Dordrecht","Papendrecht","Ridderkerk","Zwijndrecht"]
-//     }
-//   },
-//   {
-//     "post_id":38,
-//     "title":"Moderne dans voor beginners",
-//     "url":"http://oscu.test/cursus/moderne-dans-voor-beginners/",
-//     "image":"http://oscu.test/content/uploads/2019/04/alex-klaasen-showponies-1-2-300x200.jpg",
-//     "image_alt":"",
-//     "groups":{
-//       "group1":["Dans"],
-//       "group2":["Kinderen","Jongeren"],
-//       "group3":["Maandag","Woensdag","Vrijdag"],
-//       "group4":["Dordrecht","Papendrecht","Ridderkerk","Zwijndrecht"]
-//     }
-//   }
-// ];
 
-// function openFilter() {
-// 	if ( ! filter.$this.hasClass( 'is-open' ) ) {
-//
-//
-// 		scrollTop = $( window ).scrollTop();
-// 		$( '.js-container' ).css( { 'position': 'fixed', 'margin-top': -Math.abs( scrollTop ) } );
-// 		$( 'body' ).addClass( 'fixed' );
-// 		filter.$this.css( { 'visibility': 'visible' } );
-// 		setTimeout( function() {
-// 			filter.$this.addClass( 'is-open' );
-// 			filter.$this.icons.init( '.svg-icon' );
-// 		}, 300 );
-// 	}
-// };
-//
-// function closeFilter() {
-// 	if ( filter.$this.hasClass( 'is-open' ) ) {
-// 		filter.$this.removeClass( 'is-open' );
-// 		$( 'body' ).removeClass( 'fixed' );
-// 		$( '.js-container' ).removeAttr( 'style' );
-// 		$( window ).scrollTop( scrollTop );
-// 		setTimeout( function() {
-// 			filter.$this.removeAttr( 'style' );
-// 		}, 300 );
-// 	}
-// };
+let scrollTop = 0;
+
+const container = document.querySelector( '.js-container' )
 
 class App extends React.Component {
 
@@ -68,6 +17,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       isFilterOpen: false,
+      scrollTop: 0,
       activeItems: [],
       allCourses: [],
       isLoading: false,
@@ -103,27 +53,30 @@ class App extends React.Component {
   open( e ) {
     e.preventDefault()
     this.toggleFilter()
-    // ...
+
+    scrollTop = window.pageYOffset;
+
+    document.body.classList.add( 'fixed' );
+    container.classList.add( 'fixed' );
+    container.style.top = -Math.abs( scrollTop ) + "px";
+
   }
 
   close( e ) {
     e.preventDefault()
     this.toggleFilter()
-    // ...
+
+    document.body.classList.remove('fixed');
+    container.classList.remove( 'fixed' );
+    container.style.top = "0px";
   }
 
   handleActivatedFilterItems( item ) {
-    //console.log(item)
-    //console.log(this.state.activeItems)
-
-    // TODO: opsplitsen in add & remove!
-
     let tempArray = this.state.activeItems
     tempArray.unshift(item)
     this.setState({
   		activeItems: tempArray,
   	})
-    console.log(this.state.activeItems)
   }
 
   render() {
@@ -152,10 +105,12 @@ class App extends React.Component {
         <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} />
         <div className="center">
     			<div className={`filter-loader js-filter-loader lds-spinner ${this.state.isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-          {courses.map(
-            (course, i) =>
-              <Course key={i} course={course} />
-          )}
+          <div className="course-items">
+            {courses.map(
+              (course, i) =>
+                <Course key={i} course={course} />
+            )}
+          </div>
     		</div>
       </div>
     )

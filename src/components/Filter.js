@@ -37,8 +37,6 @@ const FILTERITEMS = [
   },
 ];
 
-
-
 class Filter extends React.Component {
   render() {
 
