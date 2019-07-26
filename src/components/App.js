@@ -23,11 +23,13 @@ class App extends React.Component {
       allCourses: [],
       isLoading: false,
     }
-    this.toggleFilter = this.toggleFilter.bind(this)
 
+    this.toggleFilter = this.toggleFilter.bind(this)
     this.open = this.open.bind(this)
     this.close = this.close.bind(this)
     this.handleActivatedFilterItems = this.handleActivatedFilterItems.bind(this)
+    this.updateCourses = this.updateCourses.bind(this)
+    this.getShowGroups = this.getShowGroups.bind(this)
   }
 
   componentDidMount() {
@@ -78,7 +80,6 @@ class App extends React.Component {
   		tempActiveItems[group] = [];
   	}
   	tempActiveItems[group].push( item );
-
     this.updateCourses( tempActiveItems )
   }
 
@@ -86,50 +87,72 @@ class App extends React.Component {
     // alleen deze mag state updaten ivm met asyncronous state changes.
     // geldt alleen voor states waar verdere berekeningen / statussen mee gemaakt worden.
 
+    let show_groups = [];
+    //
+		for ( var i = 1; i <= numberOfGroups; i ++ ) {
+
+      const this_app = this;
+      let show_group = true;
+		  let group = 'group' + i;
+      //console.log(activeItems);
+      //console.log('activeitems', activeItems[group]);
+
+			// if (data.groups[group] && data.groups[group].length > 0 && chosenFilters[group] && chosenFilters[group].length > 0) {
+			// 	show_group = getShowGroups( data, group );
+			// }
+			// show_groups.push(show_group);
+
+      // if activeItem matches courseItem, give it inactive: false;
+      // LET OP: later aanpassen, maar volgens mij is active items geen STATE...?!
+      // OF allCourses is geen STATE :-o
+      const allCourses = this.state.allCourses;
+      //console.log('courses', allCourses);
+      allCourses.forEach( function( course ) {
+        //console.log(course)
+        if ( course.groups[group] && course.groups[group].length > 0
+          && activeItems[group] && activeItems[group].length > 0 ) {
+            console.log(this_app)
+            show_group = this_app.getShowGroups( course, group );
+        }
+        show_groups.push(show_group);
+      } );
+
+
+
+		}
+
+		// 	let itemShouldBeShown = show_groups.every( el => el === true );
+    //
+		// 	if ( itemShouldBeShown ) {
+		// 		let courseItem = createCourseItem( data );
+		// 		filter.$listing.append( courseItem );
+		// 		count_results++;
+		// }
+
+    console.log('showgroups', show_groups);
+
 
     this.setState({
-      activeItems: tempObject
+      activeItems: activeItems
     })
 
 
   }
 
-  // getShowGroups( data, group ) {
-  // 	var show_group = false;
-  // 	// forEach is synchronous!, return will work AFTER forEach is done.
-  // 	chosenFilters[ group ].forEach( function( item ) {
-  // 		//console.log(item);
-  // 		if (data.groups[ group ].includes( item )) {
-  // 			if (!show_group) {
-  // 				// TODO: kan includes handiger?
-  // 				show_group = data.groups[ group ].includes( item );
-  // 			}
-  // 		}
-  // 	} );
-  // 	//console.log('done?');
-  // 	return show_group;
-  // }
-
-  // updateCourses() {
-  //   console.log(this.state.activeItems)
-  //
-  //   // this.state.allCourses.forEach( function( item ) {
-  //   //   let show_groups = [];
-  //   //
-  // 	// 	for ( var i = 1; i <= numberOfGroups; i ++ ) {
-  // 	// 		let show_group = true;
-  // 	// 		let group = 'group' + i;
-  //   //
-  // 	// 		if (item.groups[group] && item.groups[group].length > 0 && this.state.activeItems[group] && this.state.activeItems[group].length > 0) {
-  // 	// 			show_group = getShowGroups( data, group );
-  // 	// 		}
-  // 	// 		show_groups.push(show_group);
-  // 	// 	}
-  //   // } );
-  //
-  //
-  //
-  // }
+  getShowGroups( data, group ) {
+  	// var show_group = false;
+  	// // forEach is synchronous!, return will work AFTER forEach is done.
+  	// chosenFilters[ group ].forEach( function( item ) {
+  	// 	//console.log(item);
+  	// 	if (data.groups[ group ].includes( item )) {
+  	// 		if (!show_group) {
+  	// 			// TODO: kan includes handiger?
+  	// 			show_group = data.groups[ group ].includes( item );
+  	// 		}
+  	// 	}
+  	// } );
+  	// return show_group;
+  }
 
   render() {
 
@@ -161,7 +184,7 @@ class App extends React.Component {
           <div className="course-items">
             {courses.map(
               (course, i) =>
-                <Course key={i} course={course} />
+                ( ! course.inactive ) ? <Course key={i} course={course} /> : ''
             )}
           </div>
     		</div>
