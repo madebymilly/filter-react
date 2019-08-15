@@ -20,7 +20,8 @@ class App extends React.Component {
       isFilterOpen: false,
       scrollTop: 0,
       activeItems: {},
-      allCourses: [],
+      allCourses: [], // is dit wel state? denk het niet, want veranderd nooit. TODO!!
+      filteredCourses: [],
       isLoading: false,
     }
 
@@ -42,6 +43,7 @@ class App extends React.Component {
         } )
         this.setState( {
           allCourses: allCourses,
+          filteredCourses: allCourses,
           isLoading: false
         } )
       })
@@ -79,84 +81,98 @@ class App extends React.Component {
       if (tempActiveItems[group] == undefined ) {
   		tempActiveItems[group] = [];
   	}
-  	tempActiveItems[group].push( item );
+  	tempActiveItems[group].push( item.dataset.filter );
     this.updateCourses( tempActiveItems )
+  }
+
+  getShowGroups( data, group, activeItems ) { // TODO: data = course
+  	var show_group = false;
+  	activeItems[ group ].forEach( function( item ) {
+  		if (data.groups[ group ].includes( item )) {
+  			if (!show_group) {
+  				show_group = data.groups[ group ].includes( item );
+  			}
+  		}
+  	} );
+  	return show_group;
   }
 
   updateCourses( activeItems ) {
     // alleen deze mag state updaten ivm met asyncronous state changes.
     // geldt alleen voor states waar verdere berekeningen / statussen mee gemaakt worden.
 
-    let show_groups = [];
-    //
-		for ( var i = 1; i <= numberOfGroups; i ++ ) {
+    const this_app = this;
+    const allCourses = this.state.allCourses;
+    let tempFilteredCourses = [];
 
-      const this_app = this;
-      let show_group = true;
-		  let group = 'group' + i;
-      //console.log(activeItems);
-      //console.log('activeitems', activeItems[group]);
+    let count_results = 0;
 
-			// if (data.groups[group] && data.groups[group].length > 0 && chosenFilters[group] && chosenFilters[group].length > 0) {
-			// 	show_group = getShowGroups( data, group );
-			// }
-			// show_groups.push(show_group);
+    // === if noFilters are selected ===
+  	let noFilters = Object.entries(activeItems).length === 0;
+    if ( noFilters ) {
 
-      // if activeItem matches courseItem, give it inactive: false;
-      // LET OP: later aanpassen, maar volgens mij is active items geen STATE...?!
-      // OF allCourses is geen STATE :-o
-      const allCourses = this.state.allCourses;
-      //console.log('courses', allCourses);
+      //console.log(allCourses)
+
       allCourses.forEach( function( course ) {
-        //console.log(course)
-        if ( course.groups[group] && course.groups[group].length > 0
-          && activeItems[group] && activeItems[group].length > 0 ) {
-            console.log(this_app)
-            show_group = this_app.getShowGroups( course, group );
-        }
-        show_groups.push(show_group);
+        console.log(course);
+        tempFilteredCourses.push( course )
+        count_results++;
       } );
 
+    // === if filters are selected ===
+    } else {
 
+      //console.log(allCourses)
 
-		}
+      allCourses.forEach( function( course ) {
+        //console.log( course );
 
-		// 	let itemShouldBeShown = show_groups.every( el => el === true );
-    //
-		// 	if ( itemShouldBeShown ) {
-		// 		let courseItem = createCourseItem( data );
-		// 		filter.$listing.append( courseItem );
-		// 		count_results++;
-		// }
+        let show_groups = [];
 
-    console.log('showgroups', show_groups);
+    		for ( var i = 1; i <= numberOfGroups; i ++ ) {
 
+          let show_group = true;
+    		  let group = 'group' + i;
+
+    			if (course.groups[group] && course.groups[group].length > 0 && activeItems[group] && activeItems[group].length > 0) {
+    				show_group = this_app.getShowGroups( course, group, activeItems );
+    			}
+    			show_groups.push(show_group);
+        }
+
+        // TODO: LET OP: later aanpassen, maar volgens mij is active items geen STATE...?!
+        // OF allCourses is geen STATE :-o
+
+        //console.log(show_groups)
+
+        let itemShouldBeShown = show_groups.every( el => el === true );
+        //console.log(itemShouldBeShown)
+
+  			if ( itemShouldBeShown ) {
+  				//console.log(course, typeof course);
+          tempFilteredCourses.push( course )
+  				count_results++;
+  			}
+
+        //updateResults( count_results );
+
+      } );
+
+    }
+
+    console.log( tempFilteredCourses )
 
     this.setState({
-      activeItems: activeItems
+      activeItems: activeItems,
+      filteredCourses: tempFilteredCourses
     })
 
 
   }
 
-  getShowGroups( data, group ) {
-  	// var show_group = false;
-  	// // forEach is synchronous!, return will work AFTER forEach is done.
-  	// chosenFilters[ group ].forEach( function( item ) {
-  	// 	//console.log(item);
-  	// 	if (data.groups[ group ].includes( item )) {
-  	// 		if (!show_group) {
-  	// 			// TODO: kan includes handiger?
-  	// 			show_group = data.groups[ group ].includes( item );
-  	// 		}
-  	// 	}
-  	// } );
-  	// return show_group;
-  }
-
   render() {
 
-    const courses = this.state.allCourses,
+    const courses = this.state.filteredCourses,
       number = courses.length;
 
     return(
