@@ -8,9 +8,10 @@ import ResetFilterBtn from './ResetFilterBtn'
 
 
 let scrollTop = 0;
+let activeItems = {}; // Geen state, want kan berekend worden op basis van filterItem state.
 
 const container = document.querySelector( '.js-container' ),
-  numberOfGroups = 4; // TO DO ophalen
+  numberOfGroups = 4; // TODO: ophalen
 
 class App extends React.Component {
 
@@ -19,8 +20,7 @@ class App extends React.Component {
     this.state = {
       isFilterOpen: false,
       scrollTop: 0,
-      activeItems: {},
-      allCourses: [], // is dit wel state? denk het niet, want veranderd nooit. TODO!!
+      allCourses: [], // is dit wel state? even zo laten ivm met fetch in componentDidMount
       filteredCourses: [],
       isLoading: false,
     }
@@ -76,21 +76,28 @@ class App extends React.Component {
     container.style.top = "0px";
   }
 
-  handleActivatedFilterItems( item, group ) {
-    let tempActiveItems = this.state.activeItems;
-      if (tempActiveItems[group] == undefined ) {
-  		tempActiveItems[group] = [];
-  	}
-  	tempActiveItems[group].push( item.dataset.filter );
-    this.updateCourses( tempActiveItems )
+  handleActivatedFilterItems( item, group, activeState ) {
+    if ( activeState ) {
+      if ( activeItems[group] == undefined ) {
+    		activeItems[group] = [];
+    	}
+    	activeItems[group].push( item );
+
+    } else {
+      var index = activeItems[group].indexOf( item );
+      if ( index > -1 ) {
+        activeItems[group].splice(index, 1);
+      }
+    }
+    this.updateCourses( activeItems )
   }
 
-  getShowGroups( data, group, activeItems ) { // TODO: data = course
+  getShowGroups( course, group, activeItems ) {
   	var show_group = false;
   	activeItems[ group ].forEach( function( item ) {
-  		if (data.groups[ group ].includes( item )) {
+  		if (course.groups[ group ].includes( item )) {
   			if (!show_group) {
-  				show_group = data.groups[ group ].includes( item );
+  				show_group = course.groups[ group ].includes( item );
   			}
   		}
   	} );
@@ -98,23 +105,22 @@ class App extends React.Component {
   }
 
   updateCourses( activeItems ) {
-    // alleen deze mag state updaten ivm met asyncronous state changes.
-    // geldt alleen voor states waar verdere berekeningen / statussen mee gemaakt worden.
+
+    // alleen deze functie mag state updaten ivm met asyncronous state changes.
+    // (geldt alleen voor states waar verdere berekeningen / statussen mee gemaakt worden)
 
     const this_app = this;
     const allCourses = this.state.allCourses;
-    let tempFilteredCourses = [];
 
+    let tempFilteredCourses = [];
     let count_results = 0;
 
     // === if noFilters are selected ===
-  	let noFilters = Object.entries(activeItems).length === 0;
+  	let noFilters = Object.entries( activeItems ).length === 0;
+
     if ( noFilters ) {
 
-      //console.log(allCourses)
-
       allCourses.forEach( function( course ) {
-        console.log(course);
         tempFilteredCourses.push( course )
         count_results++;
       } );
@@ -122,10 +128,7 @@ class App extends React.Component {
     // === if filters are selected ===
     } else {
 
-      //console.log(allCourses)
-
       allCourses.forEach( function( course ) {
-        //console.log( course );
 
         let show_groups = [];
 
@@ -140,16 +143,9 @@ class App extends React.Component {
     			show_groups.push(show_group);
         }
 
-        // TODO: LET OP: later aanpassen, maar volgens mij is active items geen STATE...?!
-        // OF allCourses is geen STATE :-o
-
-        //console.log(show_groups)
-
         let itemShouldBeShown = show_groups.every( el => el === true );
-        //console.log(itemShouldBeShown)
 
   			if ( itemShouldBeShown ) {
-  				//console.log(course, typeof course);
           tempFilteredCourses.push( course )
   				count_results++;
   			}
@@ -160,10 +156,7 @@ class App extends React.Component {
 
     }
 
-    console.log( tempFilteredCourses )
-
     this.setState({
-      activeItems: activeItems,
       filteredCourses: tempFilteredCourses
     })
 
@@ -200,7 +193,7 @@ class App extends React.Component {
           <div className="course-items">
             {courses.map(
               (course, i) =>
-                ( ! course.inactive ) ? <Course key={i} course={course} /> : ''
+                <Course key={i} course={course} />
             )}
           </div>
     		</div>
@@ -208,7 +201,5 @@ class App extends React.Component {
     )
   }
 }
-
-// <FilterableCourses courses={COURSES} />
 
 export default App;

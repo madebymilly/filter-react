@@ -19,8 +19,8 @@ class FilterItem extends React.Component {
   activateItem( e ) {
     e.preventDefault();
     const item = e.currentTarget;
-    this.props.activateFilterItem( item, item.dataset.filtergroup );
     this.toggleIsActive();
+    this.props.activateFilterItem( item.dataset.filter, item.dataset.filtergroup, !this.state.isActive );
   }
 
   render() {
