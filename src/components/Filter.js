@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import CloseFilterBtn from './CloseFilterBtn'
 import ResetFilterBtn from './ResetFilterBtn'
-// import FilterGroups from './FilterGroups'
 import FilterItem from './FilterItem'
 import ShowResultsBtn from './ShowResultsBtn'
 
-
-const FILTERITEMS = [
+const FILTERITEMS = [ // TODO: uit wordpress halen
   {
     group: 'group1',
     label: 'genre',
@@ -48,7 +46,7 @@ class Filter extends React.Component {
         <h1>{this.props.shown ? 'true' : 'false'}</h1>
       	<div className="filter-top">
           <CloseFilterBtn close={this.props.close} />
-          <ResetFilterBtn />
+          <ResetFilterBtn reset={this.props.reset} />
       	</div>
 
       	<div className="filter-scroll">

@@ -29,6 +29,7 @@ class App extends React.Component {
     this.toggleFilter = this.toggleFilter.bind(this)
     this.open = this.open.bind(this)
     this.close = this.close.bind(this)
+    this.reset = this.reset.bind(this)
     this.handleActivatedFilterItems = this.handleActivatedFilterItems.bind(this)
     this.getShowGroups = this.getShowGroups.bind(this)
     this.getResultNumber = this.getResultNumber.bind(this)
@@ -76,6 +77,11 @@ class App extends React.Component {
     document.body.classList.remove('fixed');
     container.classList.remove( 'fixed' );
     container.style.top = "0px";
+  }
+
+  reset( e ) {
+    e.preventDefault();
+    this.updateCourses( activeItems = {} )
   }
 
   handleActivatedFilterItems( item, group, activeState ) {
@@ -174,8 +180,6 @@ class App extends React.Component {
     const courses = this.state.filteredCourses,
       resultNumber = this.getResultNumber();
 
-    console.log(resultNumber)
-
     return(
       <div>
         <div className="results">
@@ -192,10 +196,10 @@ class App extends React.Component {
     				<a href="#">Dansfit</a>
     				<a href="#">Volwassenen</a>
     				<a href="#">Middag</a>
-    				<ResetFilterBtn />
+    				<ResetFilterBtn reset={this.reset} />
     			</div>
     		</div>
-        <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} resultNumber={resultNumber} />
+        <Filter close={this.close} shown={this.state.isFilterOpen} reset={this.reset} activateFilterItem={this.handleActivatedFilterItems} resultNumber={resultNumber} />
         <div className="center">
     			<div className={`filter-loader js-filter-loader lds-spinner ${this.state.isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <p className={`no-results ${resultNumber !== 0 ? 'is-hidden' : ''}`}>Er zijn geen resultaten gevonden.</p>
