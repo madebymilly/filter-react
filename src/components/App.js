@@ -164,7 +164,7 @@ class App extends React.Component {
 
     this.setState({
       filteredCourses: tempFilteredCourses,
-      isLoading: true
+      isLoading: false
     })
 
   }
@@ -173,6 +173,8 @@ class App extends React.Component {
 
     const courses = this.state.filteredCourses,
       resultNumber = this.getResultNumber();
+
+    console.log(resultNumber)
 
     return(
       <div>
@@ -196,6 +198,7 @@ class App extends React.Component {
         <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} resultNumber={resultNumber} />
         <div className="center">
     			<div className={`filter-loader js-filter-loader lds-spinner ${this.state.isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <p className={`no-results ${resultNumber !== 0 ? 'is-hidden' : ''}`}>Er zijn geen resultaten gevonden.</p>
           <div className="course-items">
             {courses.map(
               (course, i) =>
