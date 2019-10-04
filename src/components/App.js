@@ -19,18 +19,20 @@ class App extends React.Component {
     super(props)
     this.state = {
       isFilterOpen: false,
-      scrollTop: 0,
+      //scrollTop: 0,
       allCourses: [], // is dit wel state? even zo laten ivm met fetch in componentDidMount
       filteredCourses: [],
       isLoading: false,
+      // resultNumber is geen state, want kan berekend worden met state.filteredCourses.length
     }
 
     this.toggleFilter = this.toggleFilter.bind(this)
     this.open = this.open.bind(this)
     this.close = this.close.bind(this)
     this.handleActivatedFilterItems = this.handleActivatedFilterItems.bind(this)
-    this.updateCourses = this.updateCourses.bind(this)
     this.getShowGroups = this.getShowGroups.bind(this)
+    this.getResultNumber = this.getResultNumber.bind(this)
+    this.updateCourses = this.updateCourses.bind(this)
   }
 
   componentDidMount() {
@@ -104,6 +106,10 @@ class App extends React.Component {
   	return show_group;
   }
 
+  getResultNumber() {
+    return this.state.filteredCourses.length
+  }
+
   updateCourses( activeItems ) {
 
     // alleen deze functie mag state updaten ivm met asyncronous state changes.
@@ -150,8 +156,6 @@ class App extends React.Component {
   				count_results++;
   			}
 
-        //updateResults( count_results );
-
       } );
 
     }
@@ -160,19 +164,18 @@ class App extends React.Component {
       filteredCourses: tempFilteredCourses
     })
 
-
   }
 
   render() {
 
     const courses = this.state.filteredCourses,
-      number = courses.length;
+      resultNumber = this.getResultNumber();
 
     return(
       <div>
         <div className="results">
     			<div className="center">
-    				<ResultNumber number={number} />
+    				<ResultNumber number={resultNumber} />
     				<OpenFilterBtn open={this.open} />
     			</div>
     		</div>
@@ -187,7 +190,7 @@ class App extends React.Component {
     				<ResetFilterBtn />
     			</div>
     		</div>
-        <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} />
+        <Filter close={this.close} shown={this.state.isFilterOpen} activateFilterItem={this.handleActivatedFilterItems} resultNumber={resultNumber} />
         <div className="center">
     			<div className={`filter-loader js-filter-loader lds-spinner ${this.state.isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <div className="course-items">

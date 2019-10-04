@@ -40,7 +40,8 @@ const FILTERITEMS = [
 class Filter extends React.Component {
   render() {
 
-    const groups = FILTERITEMS;
+    const groups = FILTERITEMS,
+      resultNumber = this.props.resultNumber;
 
     return(
       <div className={`filter js-filter ${this.props.shown ? 'is-open' : ''}`}>
@@ -68,7 +69,7 @@ class Filter extends React.Component {
       	</div>
 
       	<div className="filter-bottom">
-      		<ShowResultsBtn />
+      		<ShowResultsBtn resultNumber={resultNumber} />
       	</div>
 
       </div>
