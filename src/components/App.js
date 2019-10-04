@@ -121,6 +121,8 @@ class App extends React.Component {
     let tempFilteredCourses = [];
     let count_results = 0;
 
+    this.setState({ isLoading: true });
+
     // === if noFilters are selected ===
   	let noFilters = Object.entries( activeItems ).length === 0;
 
@@ -161,7 +163,8 @@ class App extends React.Component {
     }
 
     this.setState({
-      filteredCourses: tempFilteredCourses
+      filteredCourses: tempFilteredCourses,
+      isLoading: true
     })
 
   }
