@@ -6,7 +6,6 @@ import OpenFilterBtn from './OpenFilterBtn'
 import Course from './Course'
 import ResetFilterBtn from './ResetFilterBtn'
 
-
 let scrollTop = 0;
 let activeItems = {}; // Geen state, want kan berekend worden op basis van filterItem state.
 
