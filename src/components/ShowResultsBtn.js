@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class ShowResultsBtn extends React.Component {
   render() {
     return(
-      <a href="#" className="btn btn--big js-close-filter">Toon <strong>{this.props.resultNumber}</strong> resultaten</a>
+      <a href="#" className="btn btn--big js-close-filter" onClick={ ( e ) => this.props.close( e ) }>Toon <strong>{this.props.resultNumber}</strong> resultaten</a>
     )
   }
 }

@@ -69,7 +69,7 @@ class Filter extends React.Component {
       	</div>
 
       	<div className="filter-bottom">
-      		<ShowResultsBtn resultNumber={resultNumber} />
+      		<ShowResultsBtn resultNumber={resultNumber} close={this.props.close} />
       	</div>
 
       </div>
