@@ -4,41 +4,10 @@ import ResetFilterBtn from './ResetFilterBtn'
 import FilterItem from './FilterItem'
 import ShowResultsBtn from './ShowResultsBtn'
 
-const FILTERITEMS = [ // TODO: uit wordpress halen
-  {
-    group: 'group1',
-    label: 'genre',
-    items: [
-      'Dans', 'Kunst & Design', 'Muziek', 'Theater'
-    ]
-  },
-  {
-    group: 'group2',
-    label: 'doelgroep',
-    items: [
-      'Allerkleinsten', 'Kinderen', 'Jongeren', 'Volwassenen', 'Senioren'
-    ]
-  },
-  {
-    group: 'group3',
-    label: 'dag',
-    items: [
-      'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'
-    ]
-  },
-  {
-    group: 'group4',
-    label: 'locatie',
-    items: [
-      'Dordrect', 'Papendrecht', 'Ridderkerk', 'Zwijndrecht'
-    ]
-  },
-];
-
 class Filter extends React.Component {
   render() {
 
-    const groups = FILTERITEMS,
+    const groups = this.props.filterItems,
       resultNumber = this.props.resultNumber;
 
     return(
@@ -57,8 +26,8 @@ class Filter extends React.Component {
                   <h6><span>{group.label}</span> <a href="#" className="icon open-filter-block js-open-filter-block">&gt;</a></h6>
                   <div className="filter-items">
                     {group.items.map(
-                      (item, i) =>
-                        <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem} />
+                      (item, j) =>
+                        <FilterItem key={`${i}${j}`} value={item.value} group={group.group} active={item.active} activateItem={this.props.activateFilterItem} />
                     )}
                   </div>
                 </div>
