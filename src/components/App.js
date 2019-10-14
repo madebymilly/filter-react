@@ -7,53 +7,6 @@ import ResetFilterBtn from './ResetFilterBtn'
 
 import { filterItems } from '../../data/filterItems.js'
 
-const FILTERITEMS = [ // TODO: uit wordpress halen
-  {
-    group: 'group1',
-    label: 'genre',
-    items: [
-      { value: 'Dans', active: false },
-      { value: 'Kunst & Design', active: false },
-      { value: 'Muziek', active: false },
-      { value: 'Theater', active: false },
-    ]
-  },
-  {
-    group: 'group2',
-    label: 'doelgroep',
-    items: [
-      { value: 'Allerkleinsten', active: false },
-      { value: 'Kinderen', active: false },
-      { value: 'Jongeren', active: false },
-      { value: 'Volwassenen', active: false },
-      { value: 'Senioren', active: false },
-    ]
-  },
-  {
-    group: 'group3',
-    label: 'dag',
-    items: [
-      { value: 'Maandag', active: false },
-      { value: 'Dinsdag', active: false },
-      { value: 'Woensdag', active: false },
-      { value: 'Donderdag', active: false },
-      { value: 'Vrijdag', active: false },
-      { value: 'Zaterdag', active: false },
-      { value: 'Zondag', active: false },
-    ]
-  },
-  {
-    group: 'group4',
-    label: 'locatie',
-    items: [
-      { value: 'Dordrecht', active: false },
-      { value: 'Papendrecht', active: false },
-      { value: 'Ridderkerk', active: false },
-      { value: 'Zwijndrecht', active: false },
-    ]
-  },
-];
-
 let scrollTop = 0;
 let activeItems = {}; // Geen state, want kan berekend worden op basis van filterItem state.
 
@@ -66,10 +19,9 @@ class App extends React.Component {
     super(props)
     this.state = {
       isFilterOpen: false,
-      //scrollTop: 0,
-      allCourses: [], // is dit wel state? even zo laten ivm met fetch in componentDidMount
+      allCourses: [],
       filteredCourses: [],
-      filterItems: FILTERITEMS,
+      filterItems: filterItems,
       isLoading: false,
       // resultNumber is geen state, want kan berekend worden met state.filteredCourses.length
     }
