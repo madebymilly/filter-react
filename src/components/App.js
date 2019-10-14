@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import Filter from './Filter'
 import ResultNumber from './ResultNumber'
 import OpenFilterBtn from './OpenFilterBtn'
-// import FilterableCourses from './FilterableCourses'
 import Course from './Course'
 import ResetFilterBtn from './ResetFilterBtn'
+
+import { filterItems } from '../../data/filterItems.js'
 
 const FILTERITEMS = [ // TODO: uit wordpress halen
   {
