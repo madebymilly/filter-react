@@ -6,6 +6,7 @@
   "scripts": {
     "server": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
+    "test": "react-scripts test --env=jsdom",
     "flow": "flow"
   },
   "babel": {
@@ -52,6 +53,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.5.1",
     "eslint-config-wordpress": "^2.0.0",
     "eslint-plugin-import": "^2.18.2",
