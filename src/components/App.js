@@ -6,26 +6,27 @@ import OpenFilterBtn from './OpenFilterBtn';
 import Course from './Course';
 import ResetFilterBtn from './ResetFilterBtn';
 
+//import allCourses from '../../data/courses.json';
 import { filterItems } from '../../data/filterItems.js';
 
 let scrollTop = 0;
-let activeItems = {}; // Geen state, want kan berekend worden op basis van filterItem state.
+let activeItems = {};
 
 const container = document.querySelector( '.js-container' ),
-  numberOfGroups = 4; // TODO: ophalen
+  numberOfGroups = 4; // TODO: ophalen.
 
 class App extends React.Component {
 
   constructor( props ) {
     super( props );
     this.state = {
+      // resultNumber: 0, is geen state, want kan berekend worden met state.filteredCourses.length.
+      // activeItems: {}, is geen state, kan berekend worden op basis van filterItems state.
+      allCourses: [], // is misschien geen state, lijkt onveranderd, MAAR: zie componentDidMount
       isFilterOpen: false,
-      allCourses: [],
       filteredCourses: [],
-      filterItems: filterItems,
+      filterItems: filterItems, // 'active' state
       isLoading: false
-
-      // resultNumber is geen state, want kan berekend worden met state.filteredCourses.length
     };
     this.toggleFilter = this.toggleFilter.bind( this );
     this.open = this.open.bind( this );

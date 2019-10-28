@@ -44,7 +44,4 @@ class Filter extends React.Component {
   }
 }
 
-// <FilterGroups groups={FILTERITEMS} activateFilterItem={this.props.activateFilterItem}/>
-// <FilterItem key={i} item={item} group={group.group} activateFilterItem={this.props.activateFilterItem}/>
-
 export default Filter;
