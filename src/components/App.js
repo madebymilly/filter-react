@@ -22,7 +22,7 @@ class App extends React.Component {
     this.state = {
       // resultNumber: 0, is geen state, want kan berekend worden met state.filteredCourses.length.
       // activeItems: {}, is geen state, kan berekend worden op basis van filterItems state.
-      allCourses: [], // is misschien geen state, lijkt onveranderd, MAAR: zie componentDidMount
+      allCourses: [], // lijkt geen state, lijkt onveranderd, MAAR: zie componentDidMount
       isFilterOpen: false,
       filteredCourses: [],
       filterItems: filterItems, // 'active' state
