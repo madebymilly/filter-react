@@ -108,12 +108,7 @@ class App extends React.Component {
     return activeItems;
   }
 
-  activateFilterItem( e, _this ) {
-    e.preventDefault();
-
-    const itemValue = _this.props.value,
-      itemGroup = _this.props.group;
-
+  activateFilterItem( itemValue, itemGroup ) {
     const tempFilterItems = this.state.filterItems;
 
     for ( let group in tempFilterItems ) { // TODO: map & arrow function gebruiken
@@ -219,8 +214,9 @@ class App extends React.Component {
       filterItems = this.state.filterItems,
       resultNumber = this.getResultNumber();
 
+    // <> = 'React.Fragment'
     return (
-      <div>
+      <>
         <div className="results">
           <div className="center">
             <ResultNumber number={resultNumber} />
@@ -249,7 +245,7 @@ class App extends React.Component {
             )}
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

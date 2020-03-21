@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 
-class ResetFilterBtn extends React.Component {
-  render() {
-    return(
-      <a href="#" className="reset-filter js-reset-filter" onClick={ ( e ) => this.props.reset( e ) }>wis alle filters</a>
-    )
-  }
-}
+const ResetFilterBtn = ({ reset }) => (
+  <>
+    <a href="#" className="reset-filter js-reset-filter"
+      onClick={(e) => reset(e)}>wis alle filters</a>
+  </>
+);
 
 export default ResetFilterBtn;

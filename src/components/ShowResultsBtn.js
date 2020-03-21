@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-class ShowResultsBtn extends React.Component {
-  render() {
-    return(
-      <a href="#" className="btn btn--big js-close-filter" onClick={ ( e ) => this.props.close( e ) }>Toon <strong>{this.props.resultNumber}</strong> resultaten</a>
-    )
-  }
-}
+const ShowResultsBtn = ({ close, resultNumber }) => (
+  <>
+    <a href="#" className="btn btn--big js-close-filter" onClick={(e) => close(e)}>
+      Toon <strong>{resultNumber}</strong> resultaten
+    </a>
+  </>
+);
 
 export default ShowResultsBtn;

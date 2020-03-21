@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class CloseFilterBtn extends React.Component {
-  render() {
-    return(
-      <a href="#" className="close-filter js-close-filter"
-        onClick={ ( e ) => this.props.close( e ) }>X</a>
-    )
-  }
-}
+// Functional component & Presentational component:
+const CloseFilterBtn = ({close}) => (
+  <>
+    <a href="#" className="close-filter js-close-filter"
+      onClick={(e) => close(e)}>X</a>
+  </>
+);
 
 export default CloseFilterBtn;
