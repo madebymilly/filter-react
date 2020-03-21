@@ -20,22 +20,15 @@ class App extends React.Component {
   constructor( props ) {
     super( props );
     this.state = {
-      // resultNumber: 0, is geen state, want kan berekend worden met state.filteredCourses.length.
-      // activeItems: {}, is geen state, kan berekend worden op basis van filterItems state.
       allCourses: [], // lijkt geen state, lijkt onveranderd, MAAR: zie componentDidMount
       isFilterOpen: false,
       filteredCourses: [],
       filterItems: filterItems, // 'active' state
       isLoading: false
     };
-    this.toggleFilter = this.toggleFilter.bind( this );
-    this.open = this.open.bind( this );
-    this.close = this.close.bind( this );
-    this.reset = this.reset.bind( this );
     this.getActivatedFilterItems = this.getActivatedFilterItems.bind( this );
     this.activateFilterItem = this.activateFilterItem.bind( this );
     this.getShowGroups = this.getShowGroups.bind( this );
-    this.getResultNumber = this.getResultNumber.bind( this );
     this.updateCourses = this.updateCourses.bind( this );
   }
 
@@ -55,24 +48,24 @@ class App extends React.Component {
       });
 	}
 
-  toggleFilter() {
+  toggleFilter = () => {
     this.setState( prevState => ({
       isFilterOpen: ! prevState.isFilterOpen
     }) );
 	}
 
-  open( e ) {
+  open = (e) => {
     e.preventDefault();
     this.toggleFilter();
 
     scrollTop = window.pageYOffset;
 
-    document.body.classList.add( 'fixed' );
-    container.classList.add( 'fixed' );
-    container.style.top = -Math.abs( scrollTop ) + 'px';
+    document.body.classList.add('fixed');
+    container.classList.add('fixed');
+    container.style.top = -Math.abs(scrollTop) + 'px';
   }
 
-  close( e ) {
+  close = (e) => {
     e.preventDefault();
     this.toggleFilter();
 
@@ -81,7 +74,7 @@ class App extends React.Component {
     container.style.top = '0px';
   }
 
-  reset( e ) {
+  reset = ( e ) => {
     e.preventDefault();
 
     const tempFilterItems = this.state.filterItems;
@@ -91,6 +84,10 @@ class App extends React.Component {
       }
     }
     this.updateCourses( activeItems = {}, tempFilterItems );
+  }
+
+  getResultNumber = () => {
+    return this.state.filteredCourses.length;
   }
 
   getActivatedFilterItems( item, group, activeState ) {
@@ -141,10 +138,6 @@ class App extends React.Component {
       }
       });
       return showGroup;
-  }
-
-  getResultNumber() {
-    return this.state.filteredCourses.length;
   }
 
   updateCourses( activeItems, tempFilterItems ) {
