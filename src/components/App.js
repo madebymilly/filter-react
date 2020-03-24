@@ -26,10 +26,6 @@ class App extends React.Component {
       filterItems: filterItems, // 'active' state
       isLoading: false
     };
-    this.getActivatedFilterItems = this.getActivatedFilterItems.bind( this );
-    this.activateFilterItem = this.activateFilterItem.bind( this );
-    this.getShowGroups = this.getShowGroups.bind( this );
-    this.updateCourses = this.updateCourses.bind( this );
   }
 
   componentDidMount() {
@@ -74,7 +70,7 @@ class App extends React.Component {
     container.style.top = '0px';
   }
 
-  reset = ( e ) => {
+  reset = (e) => {
     e.preventDefault();
 
     const tempFilterItems = this.state.filterItems;
@@ -90,7 +86,7 @@ class App extends React.Component {
     return this.state.filteredCourses.length;
   }
 
-  getActivatedFilterItems( item, group, activeState ) {
+  getActivatedFilterItems = ( item, group, activeState ) => {
     if ( activeState ) {
       if ( activeItems[group] == undefined ) {
         activeItems[group] = [];
@@ -105,7 +101,7 @@ class App extends React.Component {
     return activeItems;
   }
 
-  activateFilterItem( itemValue, itemGroup ) {
+  activateFilterItem = ( itemValue, itemGroup ) => {
     const tempFilterItems = this.state.filterItems;
 
     for ( let group in tempFilterItems ) { // TODO: map & arrow function gebruiken
@@ -128,7 +124,7 @@ class App extends React.Component {
     }
   }
 
-  getShowGroups( course, group, activeItems ) {
+  getShowGroups = ( course, group, activeItems ) => {
     var showGroup = false;
     activeItems[ group ].forEach( function( item ) {
       if ( course.groups[ group ].includes( item ) ) {
@@ -140,7 +136,7 @@ class App extends React.Component {
       return showGroup;
   }
 
-  updateCourses( activeItems, tempFilterItems ) {
+  updateCourses = ( activeItems, tempFilterItems ) => {
 
     // alleen deze functie mag state updaten ivm met asyncronous state changes.
     // (geldt alleen voor states waar verdere berekeningen / statussen mee gemaakt worden)
