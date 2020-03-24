@@ -17,17 +17,20 @@ import React, { Component } from 'react'
 //   }
 // }
 
-const FilterItem = (props) => (
-  <div
-    className={`filter-item js-filter-item ${props.active ? 'is-active' : ''}`}
-    data-filter={props.value}
-    data-filtergroup={props.group}
-    onClick={(e) => props.activateItem(props.value, props.group)}>
-    <label>
-      <span className="checkbox"><span className="check"></span></span>
-      <span className="text">{props.value}  <em></em></span>
-    </label>
-  </div>
-);
+const FilterItem = (props) => {
+  let { value, group, active, activateItem } = props;
+  return (
+    <div
+      className={`filter-item js-filter-item ${active ? 'is-active' : ''}`}
+      data-filter={value}
+      data-filtergroup={group}
+      onClick={(e) => activateItem(value, group)}>
+      <label>
+        <span className="checkbox"><span className="check"></span></span>
+        <span className="text">{value}  <em></em></span>
+      </label>
+    </div>
+  )
+};
 
 export default FilterItem;
