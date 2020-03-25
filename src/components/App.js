@@ -199,9 +199,10 @@ class App extends React.Component {
 
   render() {
 
-    const courses = this.state.filteredCourses,
-      filterItems = this.state.filterItems,
-      resultNumber = this.getResultNumber();
+    const resultNumber = this.getResultNumber();
+
+    let { open, close, reset, activateFilterItem } = this;
+    let { filteredCourses: courses, filterItems: items, isFilterOpen: isOpen, isLoading } = this.state;
 
     // <> = 'React.Fragment'
     return (
@@ -209,7 +210,7 @@ class App extends React.Component {
         <div className="results">
           <div className="center">
             <ResultNumber number={resultNumber} />
-            <OpenFilterBtn open={this.open} />
+            <OpenFilterBtn open={open} />
           </div>
         </div>
         <div className="center">
@@ -220,12 +221,12 @@ class App extends React.Component {
             <a href="#">Dansfit</a>
             <a href="#">Volwassenen</a>
             <a href="#">Middag</a>
-            <ResetFilterBtn reset={this.reset} />
+            <ResetFilterBtn reset={reset} />
           </div>
         </div>
-        <Filter close={this.close} shown={this.state.isFilterOpen} reset={this.reset} activateFilterItem={this.activateFilterItem} filterItems={filterItems} resultNumber={resultNumber} />
+        <Filter close={close} shown={isOpen} reset={reset} activateFilterItem={activateFilterItem} filterItems={items} resultNumber={resultNumber} />
         <div className="center">
-          <div className={`filter-loader js-filter-loader lds-spinner ${this.state.isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div className={`filter-loader js-filter-loader lds-spinner ${isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <p className={`no-results ${0 !== resultNumber ? 'is-hidden' : ''}`}>Er zijn geen resultaten gevonden.</p>
           <div className="course-items">
             {courses.map(
