@@ -12,7 +12,6 @@ const Filter = (props) => {
     <>
 
       <div className={`filter js-filter ${shown ? 'is-open' : ''}`}>
-        <h1>{shown ? 'true' : 'false'}</h1>
         <div className="filter-top">
           <CloseFilterBtn close={close} />
           <ResetFilterBtn reset={reset} />

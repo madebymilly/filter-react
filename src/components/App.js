@@ -1,12 +1,12 @@
-// @flow
+
 import React, { Component } from 'react';
+// const { Component, render, useState } = wp.element;
 import Filter from './Filter';
 import ResultNumber from './ResultNumber';
 import OpenFilterBtn from './OpenFilterBtn';
 import Course from './Course';
 import ResetFilterBtn from './ResetFilterBtn';
 
-//import allCourses from '../../data/courses.json';
 import { filterItems } from '../../data/filterItems.js';
 
 let scrollTop = 0;
@@ -15,7 +15,7 @@ let activeItems = {};
 const container = document.querySelector( '.js-container' ),
   numberOfGroups = 4; // TODO: ophalen.
 
-class App extends React.Component {
+class App extends Component {
 
   constructor( props ) {
     super( props );
@@ -26,6 +26,15 @@ class App extends React.Component {
       filterItems: filterItems, // 'active' state
       isLoading: false
     };
+    this.toggleFilter = this.toggleFilter.bind(this);
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+    this.reset = this.reset.bind(this);
+    this.getActivatedFilterItems = this.getActivatedFilterItems.bind(this);
+    this.activateFilterItem = this.activateFilterItem.bind(this);
+    this.getShowGroups = this.getShowGroups.bind(this);
+    this.getResultNumber = this.getResultNumber.bind(this);
+    this.updateCourses = this.updateCourses.bind(this);
   }
 
   componentDidMount() {
@@ -44,13 +53,13 @@ class App extends React.Component {
       });
 	}
 
-  toggleFilter = () => {
+  toggleFilter() {
     this.setState( prevState => ({
       isFilterOpen: ! prevState.isFilterOpen
     }) );
 	}
 
-  open = (e) => {
+  open(e) {
     e.preventDefault();
     this.toggleFilter();
 
@@ -61,7 +70,7 @@ class App extends React.Component {
     container.style.top = -Math.abs(scrollTop) + 'px';
   }
 
-  close = (e) => {
+  close(e) {
     e.preventDefault();
     this.toggleFilter();
 
@@ -70,7 +79,7 @@ class App extends React.Component {
     container.style.top = '0px';
   }
 
-  reset = (e) => {
+  reset(e) {
     e.preventDefault();
 
     const tempFilterItems = this.state.filterItems;
@@ -82,11 +91,11 @@ class App extends React.Component {
     this.updateCourses( activeItems = {}, tempFilterItems );
   }
 
-  getResultNumber = () => {
+  getResultNumber() {
     return this.state.filteredCourses.length;
   }
 
-  getActivatedFilterItems = ( item, group, activeState ) => {
+  getActivatedFilterItems( item, group, activeState ) {
     if ( activeState ) {
       if ( activeItems[group] == undefined ) {
         activeItems[group] = [];
@@ -101,7 +110,7 @@ class App extends React.Component {
     return activeItems;
   }
 
-  activateFilterItem = ( itemValue, itemGroup ) => {
+  activateFilterItem( itemValue, itemGroup ) {
     const tempFilterItems = this.state.filterItems;
 
     for ( let group in tempFilterItems ) { // TODO: map & arrow function gebruiken
@@ -124,7 +133,7 @@ class App extends React.Component {
     }
   }
 
-  getShowGroups = ( course, group, activeItems ) => {
+  getShowGroups( course, group, activeItems ) {
     var showGroup = false;
     activeItems[ group ].forEach( function( item ) {
       if ( course.groups[ group ].includes( item ) ) {
@@ -136,7 +145,7 @@ class App extends React.Component {
       return showGroup;
   }
 
-  updateCourses = ( activeItems, tempFilterItems ) => {
+  updateCourses( activeItems, tempFilterItems ) {
 
     // alleen deze functie mag state updaten ivm met asyncronous state changes.
     // (geldt alleen voor states waar verdere berekeningen / statussen mee gemaakt worden)
