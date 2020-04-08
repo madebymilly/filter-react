@@ -211,9 +211,14 @@ class App extends Component {
     const resultNumber = this.getResultNumber();
 
     let { open, close, reset, activateFilterItem } = this;
-    let { filteredCourses: courses, filterItems: items, isFilterOpen: isOpen, isLoading } = this.state;
+    let { filteredCourses: courses, filterItems: items, isFilterOpen, isLoading } = this.state;
 
-    // <> = 'React.Fragment'
+    // Conditional rendering:
+    let filter;
+    if (isFilterOpen) {
+      filter = <Filter close={close} reset={reset} activateFilterItem={activateFilterItem} filterItems={items} resultNumber={resultNumber} />
+    }
+
     return (
       <>
         <div className="results">
@@ -233,7 +238,7 @@ class App extends Component {
             <ResetFilterBtn reset={reset} />
           </div>
         </div>
-        <Filter close={close} shown={isOpen} reset={reset} activateFilterItem={activateFilterItem} filterItems={items} resultNumber={resultNumber} />
+        {filter}
         <div className="center">
           <div className={`filter-loader js-filter-loader lds-spinner ${isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <p className={`no-results ${0 !== resultNumber ? 'is-hidden' : ''}`}>Er zijn geen resultaten gevonden.</p>

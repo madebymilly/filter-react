@@ -7,11 +7,11 @@ import ShowResultsBtn from './ShowResultsBtn'
 // Functional component & Presentational component:
 const Filter = (props) => {
   // Destrucuting assignments:
-  let { filterItems: items, activateFilterItem: activated, resultNumber, close, shown, reset } = props;
+  let { filterItems: items, activateFilterItem: activated, resultNumber, close, reset } = props;
   return (
     <>
 
-      <div className={`filter js-filter ${shown ? 'is-open' : ''}`}>
+      <div className="filter js-filter filter--open">
         <div className="filter-top">
           <CloseFilterBtn close={close} />
           <ResetFilterBtn reset={reset} />
