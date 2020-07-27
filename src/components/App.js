@@ -6,6 +6,7 @@ import ResultNumber from './ResultNumber';
 import OpenFilterBtn from './OpenFilterBtn';
 import Course from './Course';
 import ResetFilterBtn from './ResetFilterBtn';
+import Pagination from './Pagination';
 
 import { filterItems } from '../../data/filterItems.js';
 
@@ -206,12 +207,20 @@ class App extends Component {
 
   }
 
+  // Pagination:
+  onPageChanged = () => {
+    return false;
+  }
+
   render() {
 
     const resultNumber = this.getResultNumber();
 
     let { open, close, reset, activateFilterItem } = this;
     let { filteredCourses: courses, filterItems: items, isFilterOpen, isLoading } = this.state;
+
+    // Pagination:
+    const totalCourses = 199;
 
     // Conditional rendering:
     let filter;
@@ -239,6 +248,14 @@ class App extends Component {
           </div>
         </div>
         {filter}
+        <div class="center">
+          <Pagination
+            totalRecords={totalCourses}
+            pageLimit={8}
+            pageNeighbours={1}
+            onPageChanged={this.onPageChanged}
+          />
+        </div>
         <div className="center">
           <div className={`filter-loader js-filter-loader lds-spinner ${isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <p className={`no-results ${0 !== resultNumber ? 'is-hidden' : ''}`}>Er zijn geen resultaten gevonden.</p>
