@@ -93,7 +93,7 @@ class App extends Component {
   }
 
   getResultNumber() {
-    return this.state.filteredCourses.length;
+    return parseInt(this.state.filteredCourses.length);
   }
 
   getActivatedFilterItems( item, group, activeState ) {
@@ -219,9 +219,6 @@ class App extends Component {
     let { open, close, reset, activateFilterItem } = this;
     let { filteredCourses: courses, filterItems: items, isFilterOpen, isLoading } = this.state;
 
-    // Pagination:
-    const totalCourses = 199;
-
     // Conditional rendering:
     let filter;
     if (isFilterOpen) {
@@ -248,9 +245,9 @@ class App extends Component {
           </div>
         </div>
         {filter}
-        <div class="center">
+        <div className="center">
           <Pagination
-            totalRecords={totalCourses}
+            totalRecords={resultNumber}
             pageLimit={8}
             pageNeighbours={1}
             onPageChanged={this.onPageChanged}
