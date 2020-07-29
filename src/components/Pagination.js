@@ -20,104 +20,6 @@ const range = (from, to, step = 1) => {
     return range;
 }
 
-/**
-* Let's say we have 10 pages and we set pageNeighbours to 2
-* Given that the current page is 6
-* The pagination control will look like the following:
-*
-* (1/<<) < {4 5} [6] {7 8} > (10/>>)
-*
-*/
-function fetchPageNumbers( totalPages, currentPage, pageNeighbours) {
-
-    //console.log(totalPages, currentPage, pageNeighbours);
-
-    /**
-     * totalNumbers: the total page numbers to show on the control
-     * totalBlocks: totalNumbers + 2 to cover for the left(<) and right(>) controls
-     */
-    const totalNumbers = (pageNeighbours * 2) + 3;
-    const totalBlocks = totalNumbers + 2;
-    //console.log(totalNumbers, totalBlocks);
-
-    if (totalPages > totalBlocks) {
-
-        const startPage = Math.max(2, currentPage - pageNeighbours);
-        const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
-        //console.log(startPage, endPage);
-
-        let pages = range(startPage, endPage);
-        //console.log('pages: ' + pages);
-
-        /**
-         * hasLeftSpill: has hidden pages to the left
-         * hasRightSpill: has hidden pages to the right
-         * spillOffset: number of hidden pages either to the left or to the right
-         */
-        const hasLeftSpill = startPage > 2;
-        const hasRightSpill = (totalPages - endPage) > 1;
-        const spillOffset = totalNumbers - (pages.length + 1);
-        //console.log(hasLeftSpill, hasRightSpill, spillOffset)
-
-        switch (true) {
-            // handle: (1) < {5 6} [7] {8 9} (10)
-            case (hasLeftSpill && !hasRightSpill): {
-                const extraPages = range(startPage - spillOffset, startPage - 1);
-                pages = [LEFT_PAGE, ...extraPages, ...pages];
-                break;
-            }
-
-            // handle: (1) {2 3} [4] {5 6} > (10)
-            case (!hasLeftSpill && hasRightSpill): {
-                const extraPages = range(endPage + 1, endPage + spillOffset);
-                pages = [...pages, ...extraPages, RIGHT_PAGE];
-                break;
-            }
-
-            // handle: (1) < {4 5} [6] {7 8} > (10)
-            case (hasLeftSpill && hasRightSpill):
-            default: {
-                pages = [LEFT_PAGE, ...pages, RIGHT_PAGE];
-                break;
-            }
-        }
-
-        return [1, ...pages, totalPages];
-
-    }
-
-    return range(1, totalPages);
-}
-
-function handleClick(page, props, totalPages) {
-    //e.preventDefault();
-    gotoPage(page, props, totalPages);
-}
-
-function handleMoveLeft() {
-
-}
-
-function handleMoveRight() {
-
-}
-
-function gotoPage(page, props, totalPages) {
-    const { onPageChanged = f => f } = props;
-
-    const currentPage = Math.max(0, Math.min(page, totalPages));
-
-    const paginationData = {
-        currentPage,
-        totalPages: totalPages,
-        pageLimit: props.pageLimit,
-        totalRecords: props.totalRecords
-    };
-    console.log(paginationData);
-    onPageChanged(paginationData);
-    return currentPage;
-}
-
 const Pagination = (props) => {
 
     let { totalRecords = 0, pageLimit = 30, pageNeighbours = 0, currentPage = 1 } = props;
@@ -131,13 +33,10 @@ const Pagination = (props) => {
 
     let totalPages = Math.ceil(totalRecords / pageLimit);
 
-    // Hooks (state)
-    //const [currentPage, setCurrentPage] = useState(1); // is state in app.js
-
     // Hooks (effect) / (componentDidMount)
     useEffect(() => {
         //let newCurrentPage =
-        gotoPage(1, props, totalPages);
+        gotoPage(1);
         //console.log(newCurrentPage);
         //setCurrentPage(newCurrentPage);
     },
@@ -145,9 +44,99 @@ const Pagination = (props) => {
         [],
     );
 
+    const fetchPageNumbers = () => {
+
+        //console.log(totalPages, currentPage, pageNeighbours);
+    
+        /**
+         * totalNumbers: the total page numbers to show on the control
+         * totalBlocks: totalNumbers + 2 to cover for the left(<) and right(>) controls
+         */
+        const totalNumbers = (pageNeighbours * 2) + 3;
+        const totalBlocks = totalNumbers + 2;
+        //console.log(totalNumbers, totalBlocks);
+    
+        if (totalPages > totalBlocks) {
+    
+            const startPage = Math.max(2, currentPage - pageNeighbours);
+            const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
+            //console.log(startPage, endPage);
+    
+            let pages = range(startPage, endPage);
+            //console.log('pages: ' + pages);
+    
+            /**
+             * hasLeftSpill: has hidden pages to the left
+             * hasRightSpill: has hidden pages to the right
+             * spillOffset: number of hidden pages either to the left or to the right
+             */
+            const hasLeftSpill = startPage > 2;
+            const hasRightSpill = (totalPages - endPage) > 1;
+            const spillOffset = totalNumbers - (pages.length + 1);
+            //console.log(hasLeftSpill, hasRightSpill, spillOffset)
+    
+            switch (true) {
+                // handle: (1) < {5 6} [7] {8 9} (10)
+                case (hasLeftSpill && !hasRightSpill): {
+                    const extraPages = range(startPage - spillOffset, startPage - 1);
+                    pages = [LEFT_PAGE, ...extraPages, ...pages];
+                    break;
+                }
+    
+                // handle: (1) {2 3} [4] {5 6} > (10)
+                case (!hasLeftSpill && hasRightSpill): {
+                    const extraPages = range(endPage + 1, endPage + spillOffset);
+                    pages = [...pages, ...extraPages, RIGHT_PAGE];
+                    break;
+                }
+    
+                // handle: (1) < {4 5} [6] {7 8} > (10)
+                case (hasLeftSpill && hasRightSpill):
+                default: {
+                    pages = [LEFT_PAGE, ...pages, RIGHT_PAGE];
+                    break;
+                }
+            }
+    
+            return [1, ...pages, totalPages];
+    
+        }
+    
+        return range(1, totalPages);
+    };
+
+    const handleClick = (page, e) => {
+        e.preventDefault();
+        gotoPage(page);
+    };
+    
+    const handleMoveLeft = (e) => {
+        e.preventDefault();
+    };
+    
+    const handleMoveRight = (e) => {
+        e.preventDefault();
+    };
+
+    const gotoPage = (page) => {
+        const { onPageChanged = f => f } = props;
+    
+        const currentPage = Math.max(0, Math.min(page, totalPages));
+    
+        const paginationData = {
+            currentPage,
+            totalPages: totalPages,
+            pageLimit: props.pageLimit,
+            totalRecords: props.totalRecords
+        };
+        console.log(paginationData);
+        onPageChanged(paginationData);
+        return currentPage;
+    };
+
     if (!totalRecords || totalPages === 1) return null;
 
-    const pages = fetchPageNumbers(totalPages, currentPage, pageNeighbours);
+    const pages = fetchPageNumbers();
 
     return (
         <>
@@ -184,7 +173,7 @@ const Pagination = (props) => {
 
                     return (
                         <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
-                            <a className="page-link" href="#" onClick={(e) => handleClick(page, props, totalPages)}>{page}</a>
+                            <a className="page-link" href="#" onClick={(e) => handleClick(page, e)}>{page}</a>
                         </li>
                     );
 
