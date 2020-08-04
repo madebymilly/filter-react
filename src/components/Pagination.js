@@ -35,19 +35,14 @@ const Pagination = (props) => {
 
     // Hooks (effect) / (componentDidMount)
     useEffect(() => {
-        //let newCurrentPage =
         gotoPage(1);
-        //console.log(newCurrentPage);
-        //setCurrentPage(newCurrentPage);
     },
         // dependencies
-        [],
+        [totalRecords] // use effect only when totalRecords changes.
     );
 
     const fetchPageNumbers = () => {
 
-        //console.log(totalPages, currentPage, pageNeighbours);
-    
         /**
          * totalNumbers: the total page numbers to show on the control
          * totalBlocks: totalNumbers + 2 to cover for the left(<) and right(>) controls
@@ -55,16 +50,16 @@ const Pagination = (props) => {
         const totalNumbers = (pageNeighbours * 2) + 3;
         const totalBlocks = totalNumbers + 2;
         //console.log(totalNumbers, totalBlocks);
-    
+
         if (totalPages > totalBlocks) {
-    
+
             const startPage = Math.max(2, currentPage - pageNeighbours);
             const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
             //console.log(startPage, endPage);
-    
+
             let pages = range(startPage, endPage);
             //console.log('pages: ' + pages);
-    
+
             /**
              * hasLeftSpill: has hidden pages to the left
              * hasRightSpill: has hidden pages to the right
@@ -74,7 +69,7 @@ const Pagination = (props) => {
             const hasRightSpill = (totalPages - endPage) > 1;
             const spillOffset = totalNumbers - (pages.length + 1);
             //console.log(hasLeftSpill, hasRightSpill, spillOffset)
-    
+
             switch (true) {
                 // handle: (1) < {5 6} [7] {8 9} (10)
                 case (hasLeftSpill && !hasRightSpill): {
@@ -82,14 +77,14 @@ const Pagination = (props) => {
                     pages = [LEFT_PAGE, ...extraPages, ...pages];
                     break;
                 }
-    
+
                 // handle: (1) {2 3} [4] {5 6} > (10)
                 case (!hasLeftSpill && hasRightSpill): {
                     const extraPages = range(endPage + 1, endPage + spillOffset);
                     pages = [...pages, ...extraPages, RIGHT_PAGE];
                     break;
                 }
-    
+
                 // handle: (1) < {4 5} [6] {7 8} > (10)
                 case (hasLeftSpill && hasRightSpill):
                 default: {
@@ -97,11 +92,11 @@ const Pagination = (props) => {
                     break;
                 }
             }
-    
+
             return [1, ...pages, totalPages];
-    
+
         }
-    
+
         return range(1, totalPages);
     };
 
@@ -109,27 +104,27 @@ const Pagination = (props) => {
         e.preventDefault();
         gotoPage(page);
     };
-    
+
     const handleMoveLeft = (e) => {
         e.preventDefault();
     };
-    
+
     const handleMoveRight = (e) => {
         e.preventDefault();
     };
 
     const gotoPage = (page) => {
         const { onPageChanged = f => f } = props;
-    
+
         const currentPage = Math.max(0, Math.min(page, totalPages));
-    
+
         const paginationData = {
             currentPage,
             totalPages: totalPages,
             pageLimit: props.pageLimit,
             totalRecords: props.totalRecords
         };
-        console.log(paginationData);
+        //console.log(paginationData);
         onPageChanged(paginationData);
         return currentPage;
     };
