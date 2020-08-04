@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 //import PropTypes from "prop-types"; // TODO
 
 const LEFT_PAGE = 'LEFT';
+const LEFT_PAGE_DISABLED = 'LEFT_EMPTY';
 const RIGHT_PAGE = 'RIGHT';
-
+const RIGHT_PAGE_DISABLED = 'RIGHT_EMPTY';
 /**
  * Helper method for creating a range of numbers
  * range(1, 5) => [1, 2, 3, 4, 5]
@@ -68,20 +69,20 @@ const Pagination = (props) => {
             const hasLeftSpill = startPage > 2;
             const hasRightSpill = (totalPages - endPage) > 1;
             const spillOffset = totalNumbers - (pages.length + 1);
-            //console.log(hasLeftSpill, hasRightSpill, spillOffset)
+            console.log(hasLeftSpill, hasRightSpill, spillOffset)
 
             switch (true) {
-                // handle: (1) < {5 6} [7] {8 9} (10)
+                // end of pagination
                 case (hasLeftSpill && !hasRightSpill): {
-                    const extraPages = range(startPage - spillOffset, startPage - 1);
-                    pages = [LEFT_PAGE, ...extraPages, ...pages];
+                    const extraPages = range(startPage - spillOffset, 5);
+                    pages = [LEFT_PAGE, ...extraPages, ...pages, totalPages, RIGHT_PAGE_DISABLED];
                     break;
                 }
 
-                // handle: (1) {2 3} [4] {5 6} > (10)
+                // start of pagination
                 case (!hasLeftSpill && hasRightSpill): {
-                    const extraPages = range(endPage + 1, endPage + spillOffset);
-                    pages = [...pages, ...extraPages, RIGHT_PAGE];
+                    const extraPages = range(endPage + 1, 5);
+                    pages = [LEFT_PAGE_DISABLED, 1, ...pages, ...extraPages, RIGHT_PAGE];
                     break;
                 }
 
@@ -93,7 +94,8 @@ const Pagination = (props) => {
                 }
             }
 
-            return [1, ...pages, totalPages];
+            //return [1, ...pages, totalPages];
+            return [...pages];
 
         }
 
@@ -159,9 +161,27 @@ const Pagination = (props) => {
                         </li>
                     );
 
+                    if (page === LEFT_PAGE_DISABLED) return (
+                        <li key={index} className="page-item">
+                            <a className="page-link is-disabled" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span className="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    );
+
                     if (page === RIGHT_PAGE) return (
                         <li key={index} className="page-item">
                             <a className="page-link" href="#" aria-label="Next" onClick={handleMoveRight}>
+                                <span aria-hidden="true">&raquo;</span>
+                                <span className="sr-only">Next</span>
+                            </a>
+                        </li>
+                    );
+
+                    if (page === RIGHT_PAGE_DISABLED) return (
+                        <li key={index} className="page-item">
+                            <a className="page-link is-disabled" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span className="sr-only">Next</span>
                             </a>

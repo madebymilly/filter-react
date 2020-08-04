@@ -221,7 +221,7 @@ class App extends Component {
     const offset = (currentPage - 1) * pageLimit;
     const currentCourses = tempAllCourses.slice(offset, offset + pageLimit);
 
-    console.log(currentPage, currentCourses, totalPages);
+    //console.log(currentPage, currentCourses, totalPages);
 
     this.setState(prevState => ({ // werk met prevState, zodat het asyncroon werkt.
       currentPage: currentPage,
@@ -267,7 +267,7 @@ class App extends Component {
           <Pagination
             totalRecords={resultNumber}
             pageLimit={8}
-            pageNeighbours={1}
+            pageNeighbours={3}
             onPageChanged={this.onPageChanged}
             currentPage={currentPage}
           />
