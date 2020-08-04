@@ -107,10 +107,12 @@ const Pagination = (props) => {
 
     const handleMoveLeft = (e) => {
         e.preventDefault();
+        gotoPage(currentPage - (pageNeighbours * 2) - 1);
     };
 
     const handleMoveRight = (e) => {
         e.preventDefault();
+        gotoPage(currentPage + (pageNeighbours * 2) + 1);
     };
 
     const gotoPage = (page) => {
@@ -166,11 +168,19 @@ const Pagination = (props) => {
                         </li>
                     );
 
-                    return (
-                        <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
-                            <a className="page-link" href="#" onClick={(e) => handleClick(page, e)}>{page}</a>
-                        </li>
-                    );
+                    // if (index === 0) {
+                    //     return (
+                    //         <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
+                    //             <a className="page-link" href="#" onClick={(e) => handleClick(page, e)}></a>
+                    //         </li>
+                    //     )
+                    // } else {
+                        return (
+                            <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
+                                <a className="page-link" href="#" onClick={(e) => handleClick(page, e)}>{page}</a>
+                            </li>
+                        );
+                    // }
 
                 })}
             </ul>
