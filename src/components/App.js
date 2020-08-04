@@ -21,7 +21,7 @@ class App extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      allCourses: [], // lijkt geen state, lijkt onveranderd, MAAR: zie componentDidMount
+      allCourses: [], // => aparte JS class van maken, hoeft namelijk geen state te zijn, zelfs geen react (want niet gerenderd)
       isFilterOpen: false,
       filteredCourses: [],
       filterItems: filterItems, // 'active' state
@@ -43,18 +43,20 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true });
+    this.setState(prevState => ({
+      isLoading: !prevState.deckReady
+    }));
 		fetch( '../data/courses.json' )
 			.then( data => data.json() )
       .then( result => {
         const allCourses = result.map( course => {
           return course;
         });
-        this.setState({
+        this.setState(prevState => ({
           allCourses: allCourses,
           filteredCourses: allCourses,
-          isLoading: false
-        });
+          isLoading: !prevState.deckReady
+        }));
       });
 	}
 
