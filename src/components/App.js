@@ -235,12 +235,37 @@ class App extends Component {
     const resultNumber = this.getResultNumber();
 
     let { open, close, reset, activateFilterItem } = this;
-    let { filteredCourses: courses, filterItems: items, isFilterOpen, isLoading, currentCourses, currentPage } = this.state;
+    let { settings } = this.props;
+    let { filteredCourses, filterItems: items, isFilterOpen, isLoading, currentCourses, currentPage } = this.state;
+
+    let courses = [];
+    if ( settings.pagination ) {
+      courses = currentCourses;
+    } else {
+      courses = filteredCourses;
+    }
 
     // Conditional rendering:
     let filter;
-    if (isFilterOpen) {
-      filter = <Filter close={close} reset={reset} activateFilterItem={activateFilterItem} filterItems={items} resultNumber={resultNumber} />
+    if ( isFilterOpen ) {
+      filter = <Filter 
+        close={close} 
+        reset={reset} 
+        activateFilterItem={activateFilterItem} 
+        filterItems={items} 
+        resultNumber={resultNumber}
+      />
+    }
+
+    let pagination;
+    if ( settings.pagination ) {
+        pagination = <Pagination
+        totalRecords={resultNumber}
+        pageLimit={8}
+        pageNeighbours={3}
+        onPageChanged={this.onPageChanged}
+        currentPage={currentPage}
+      />
     }
 
     return (
@@ -264,19 +289,13 @@ class App extends Component {
         </div>
         {filter}
         <div className="center">
-          <Pagination
-            totalRecords={resultNumber}
-            pageLimit={8}
-            pageNeighbours={3}
-            onPageChanged={this.onPageChanged}
-            currentPage={currentPage}
-          />
+          {pagination}
         </div>
         <div className="center">
           <div className={`filter-loader js-filter-loader lds-spinner ${isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <p className={`no-results ${0 !== resultNumber ? 'is-hidden' : ''}`}>Er zijn geen resultaten gevonden.</p>
           <div className="course-items">
-            {currentCourses.map(
+            {courses.map(
               ( course, i ) =>
                 <Course key={i} course={course} />
             )}

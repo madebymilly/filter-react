@@ -69,7 +69,7 @@ const Pagination = (props) => {
             const hasLeftSpill = startPage > 2;
             const hasRightSpill = (totalPages - endPage) > 1;
             const spillOffset = totalNumbers - (pages.length + 1);
-            console.log(hasLeftSpill, hasRightSpill, spillOffset)
+            //console.log(hasLeftSpill, hasRightSpill, spillOffset)
 
             switch (true) {
                 // end of pagination
