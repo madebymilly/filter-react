@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { Switch, Route, Link, BrowserRouter as Router, browserHistory } from 'react-router-dom'
 // const { Component, render, useState } = wp.element;
 import Filter from './Filter';
 import ResultNumber from './ResultNumber';
@@ -221,7 +222,7 @@ class App extends Component {
     const offset = (currentPage - 1) * pageLimit;
     const currentCourses = tempAllCourses.slice(offset, offset + pageLimit);
 
-    //console.log(currentPage, currentCourses, totalPages);
+    console.log(currentPage, currentCourses, totalPages);
 
     this.setState(prevState => ({ // werk met prevState, zodat het asyncroon werkt.
       currentPage: currentPage,
@@ -259,13 +260,28 @@ class App extends Component {
 
     let pagination;
     if ( settings.pagination ) {
-        pagination = <Pagination
+      pagination = <Pagination
         totalRecords={resultNumber}
         pageLimit={8}
         pageNeighbours={3}
         onPageChanged={this.onPageChanged}
         currentPage={currentPage}
       />
+
+      // pagination = <Router>
+      //   <Switch>
+      //     <Route exact path="/" component={() => 
+      //       <Pagination 
+      //         pagination={settings.pagination}
+      //         totalRecords={resultNumber}
+      //         pageLimit={8}
+      //         pageNeighbours={3}
+      //         onPageChanged={this.onPageChanged}
+      //         currentPage={currentPage}
+      //       />
+      //     } />
+      //   </Switch>
+      // </Router>
     }
 
     return (

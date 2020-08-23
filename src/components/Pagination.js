@@ -36,11 +36,13 @@ const Pagination = (props) => {
 
     // Hooks (effect) / (componentDidMount)
     useEffect(() => {
-        gotoPage(1);
+        console.log('useEffect')
+        //gotoPage(1);
     },
         // dependencies
         [totalRecords] // use effect only when totalRecords changes.
     );
+    
 
     const fetchPageNumbers = () => {
 

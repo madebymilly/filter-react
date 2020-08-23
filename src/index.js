@@ -1,7 +1,7 @@
 import "./index.less";
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Route, Link, BrowserRouter as Router, browserHistory } from 'react-router-dom'
+import { Switch, Route, Link, BrowserRouter as Router, browserHistory } from 'react-router-dom'
 
 import App from './components/App'
 import Test from './components/Test'
