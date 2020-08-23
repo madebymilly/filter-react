@@ -1,5 +1,8 @@
 
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Pagination from 'react-router-pagination'
+
 // const { Component, render, useState } = wp.element;
 import Filter from './Filter';
 import ResultNumber from './ResultNumber';
@@ -219,8 +222,10 @@ class App extends Component {
       filter = <Filter close={close} reset={reset} activateFilterItem={activateFilterItem} filterItems={items} resultNumber={resultNumber} />
     }
 
+    const totalPages = Pagination.calculateTotalPages(courses.length, 8);
+
     return (
-      <>
+      <Router>
         <div className="results">
           <div className="center">
             <ResultNumber number={resultNumber} />
@@ -238,6 +243,10 @@ class App extends Component {
             <ResetFilterBtn reset={reset} />
           </div>
         </div>
+        <Pagination
+          totalPages={12}
+          pageNumber={1}
+        />
         {filter}
         <div className="center">
           <div className={`filter-loader js-filter-loader lds-spinner ${isLoading ? '' : 'is-hidden'}`}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -249,7 +258,7 @@ class App extends Component {
             )}
           </div>
         </div>
-      </>
+      </Router>
     );
   }
 }
