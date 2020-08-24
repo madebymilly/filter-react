@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Switch, Route, Link, BrowserRouter as Router, browserHistory } from 'react-router-dom'
 
-import App from './components/App'
-import Test from './components/Test'
+import CourseArchive from './components/CourseArchive'
+//import Test from './components/Test'
 
 
 // TODO uitbreiden met pagination settings
@@ -14,8 +14,16 @@ const settings = {
 
 if (document.getElementById('courses-archive') !== null) {
 
+	const routing = (
+		<Router>
+			<Route path="/" component={() => <CourseArchive settings={settings} />} />
+			<Route path="/:pagenum" component={() => <CourseArchive settings={settings} />} />
+		</Router>
+	);
+
+
 	ReactDOM.render(
-		<App settings={settings}/>,
+		routing,
 		document.getElementById('courses-archive')
 	);
 

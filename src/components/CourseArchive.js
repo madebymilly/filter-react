@@ -17,7 +17,7 @@ let activeItems = {};
 const container = document.querySelector( '.js-container' ),
   numberOfGroups = 4; // TODO: ophalen.
 
-class App extends Component {
+class CourseArchive extends Component {
 
   constructor( props ) {
     super( props );
@@ -268,20 +268,17 @@ class App extends Component {
         currentPage={currentPage}
       />
 
-      // pagination = <Router>
-      //   <Switch>
-      //     <Route exact path="/" component={() => 
-      //       <Pagination 
-      //         pagination={settings.pagination}
-      //         totalRecords={resultNumber}
-      //         pageLimit={8}
-      //         pageNeighbours={3}
-      //         onPageChanged={this.onPageChanged}
-      //         currentPage={currentPage}
-      //       />
-      //     } />
-      //   </Switch>
-      // </Router>
+      // pagination = 
+      //   <Route exact path="/" component={() => 
+      //     <Pagination 
+      //       pagination={settings.pagination}
+      //       totalRecords={resultNumber}
+      //       pageLimit={8}
+      //       pageNeighbours={3}
+      //       onPageChanged={this.onPageChanged}
+      //       currentPage={currentPage}
+      //     />
+      //   } />
     }
 
     return (
@@ -322,4 +319,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default CourseArchive;

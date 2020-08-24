@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Switch, Route, Link, BrowserRouter as Router, browserHistory, useParams, useLocation } from 'react-router-dom'
 //import PropTypes from "prop-types"; // TODO
 
 const LEFT_PAGE = 'LEFT';
@@ -21,7 +22,7 @@ const range = (from, to, step = 1) => {
     return range;
 }
 
-const Pagination = (props) => {
+const Pagination = (props, match) => {
 
     let { totalRecords = 0, pageLimit = 30, pageNeighbours = 0, currentPage = 1 } = props;
     totalRecords = typeof totalRecords === "number" ? totalRecords : 0;
@@ -36,13 +37,12 @@ const Pagination = (props) => {
 
     // Hooks (effect) / (componentDidMount)
     useEffect(() => {
-        console.log('useEffect')
-        //gotoPage(1);
+        // console.log('useEffect1')
+        gotoPage(1);
     },
         // dependencies
         [totalRecords] // use effect only when totalRecords changes.
     );
-    
 
     const fetchPageNumbers = () => {
 
@@ -120,6 +120,7 @@ const Pagination = (props) => {
     };
 
     const gotoPage = (page) => {
+        console.log(page)
         const { onPageChanged = f => f } = props;
 
         const currentPage = Math.max(0, Math.min(page, totalPages));
@@ -155,7 +156,9 @@ const Pagination = (props) => {
                 {pages.map((page, index) => {
 
                     if (page === LEFT_PAGE) return (
+                        
                         <li key={index} className="page-item">
+                            <Link to={`/3`}>link</Link>
                             <a className="page-link" href="#" aria-label="Previous" onClick={handleMoveLeft}>
                                 <span aria-hidden="true">&laquo;</span>
                                 <span className="sr-only">Previous</span>
@@ -174,6 +177,7 @@ const Pagination = (props) => {
 
                     if (page === RIGHT_PAGE) return (
                         <li key={index} className="page-item">
+                            <Link to={`/3`}>link</Link>
                             <a className="page-link" href="#" aria-label="Next" onClick={handleMoveRight}>
                                 <span aria-hidden="true">&raquo;</span>
                                 <span className="sr-only">Next</span>
@@ -183,6 +187,7 @@ const Pagination = (props) => {
 
                     if (page === RIGHT_PAGE_DISABLED) return (
                         <li key={index} className="page-item">
+                            <Link to={`/3`}>link</Link>
                             <a className="page-link is-disabled" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span className="sr-only">Next</span>
@@ -199,6 +204,7 @@ const Pagination = (props) => {
                     // } else {
                         return (
                             <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
+                                <Link to={`/3`}>link</Link>
                                 <a className="page-link" href="#" onClick={(e) => handleClick(page, e)}>{page}</a>
                             </li>
                         );
