@@ -35,13 +35,17 @@ const Pagination = (props, match) => {
 
     let totalPages = Math.ceil(totalRecords / pageLimit);
 
-    // Hooks (effect) / (componentDidMount)
+    let { pagenumber } = useParams();
+    pagenumber = parseInt(pagenumber);
+
     useEffect(() => {
-        // console.log('useEffect1')
-        gotoPage(1);
+        if (!pagenumber) {
+            pagenumber = 1;
+        }
+        console.log("pagenumber ", pagenumber)
+        gotoPage(pagenumber)
     },
-        // dependencies
-        [totalRecords] // use effect only when totalRecords changes.
+        [totalRecords, pagenumber] // dependencies
     );
 
     const fetchPageNumbers = () => {
@@ -104,20 +108,20 @@ const Pagination = (props, match) => {
         return range(1, totalPages);
     };
 
-    const handleClick = (page, e) => {
-        e.preventDefault();
-        gotoPage(page);
-    };
+    // const handleClick = (page, e) => {
+    //     e.preventDefault();
+    //     gotoPage(page);
+    // };
 
-    const handleMoveLeft = (e) => {
-        e.preventDefault();
-        gotoPage(currentPage - (pageNeighbours * 2) - 1);
-    };
+    // const handleMoveLeft = (e) => {
+    //     e.preventDefault();
+    //     gotoPage(currentPage - (pageNeighbours * 2) - 1);
+    // };
 
-    const handleMoveRight = (e) => {
-        e.preventDefault();
-        gotoPage(currentPage + (pageNeighbours * 2) + 1);
-    };
+    // const handleMoveRight = (e) => {
+    //     e.preventDefault();
+    //     gotoPage(currentPage + (pageNeighbours * 2) + 1);
+    // };
 
     const gotoPage = (page) => {
         console.log(page)
@@ -131,7 +135,7 @@ const Pagination = (props, match) => {
             pageLimit: props.pageLimit,
             totalRecords: props.totalRecords
         };
-        //console.log(paginationData);
+        console.log(paginationData);
         onPageChanged(paginationData);
         return currentPage;
     };
@@ -150,45 +154,58 @@ const Pagination = (props, match) => {
                     <p>Total pages: {totalPages}</p>
                     <p>Current page: {currentPage}</p>
                     <p>Pagenumbers: {pages}</p>
+                    <p>PageNo router: {pagenumber} </p>
                 </div>
             </div>
             <ul className="pagination">
                 {pages.map((page, index) => {
 
-                    if (page === LEFT_PAGE) return (
-                        
-                        <li key={index} className="page-item">
-                            <Link to={`/3`}>link</Link>
-                            <a className="page-link" href="#" aria-label="Previous" onClick={handleMoveLeft}>
-                                <span aria-hidden="true">&laquo;</span>
-                                <span className="sr-only">Previous</span>
-                            </a>
-                        </li>
-                    );
+                    if (page === LEFT_PAGE) {
+
+                        let prevPage = currentPage - (pageNeighbours * 2) - 1;
+                        prevPage = ( prevPage == 0 ) ? 1 : prevPage
+
+                        return (
+
+                            <li key={index} className="page-item">
+                                <Link className="page-link" to={`/page/${prevPage}`}>&laquo;</Link>
+                                {/* <a className="page-link" href="#" aria-label="Previous" onClick={handleMoveLeft}>
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span className="sr-only">Previous</span>
+                                </a> */}
+                            </li>
+                        );
+                    }
 
                     if (page === LEFT_PAGE_DISABLED) return (
                         <li key={index} className="page-item">
-                            <a className="page-link is-disabled" href="#" aria-label="Previous">
+                            <a className="page-link is-disabled" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span className="sr-only">Previous</span>
                             </a>
                         </li>
                     );
 
-                    if (page === RIGHT_PAGE) return (
-                        <li key={index} className="page-item">
-                            <Link to={`/3`}>link</Link>
-                            <a className="page-link" href="#" aria-label="Next" onClick={handleMoveRight}>
-                                <span aria-hidden="true">&raquo;</span>
-                                <span className="sr-only">Next</span>
-                            </a>
-                        </li>
-                    );
+                    if (page === RIGHT_PAGE) {
+
+                        let nextPage = currentPage + (pageNeighbours * 2) + 1;
+                        nextPage = (nextPage > totalPages ) ? totalPages : nextPage
+
+                        return (
+                            <li key={index} className="page-item">
+                                <Link className="page-link" to={`/page/${nextPage}`}>&raquo;</Link>
+                                {/* <a className="page-link" href="#" aria-label="Next" onClick={handleMoveRight}>
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span className="sr-only">Next</span>
+                                </a> */}
+                            </li>
+
+                        );
+                    }
 
                     if (page === RIGHT_PAGE_DISABLED) return (
                         <li key={index} className="page-item">
-                            <Link to={`/3`}>link</Link>
-                            <a className="page-link is-disabled" href="#" aria-label="Next">
+                            <a className="page-link is-disabled" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span className="sr-only">Next</span>
                             </a>
@@ -204,8 +221,8 @@ const Pagination = (props, match) => {
                     // } else {
                         return (
                             <li key={index} className={`page-item${currentPage === page ? ' active' : ''}`}>
-                                <Link to={`/3`}>link</Link>
-                                <a className="page-link" href="#" onClick={(e) => handleClick(page, e)}>{page}</a>
+                                <Link className="page-link" to={`/page/${page}`}>{page}</Link>
+                                {/* <a className="page-link" href={`/page/${page}`} onClick={(e) => handleClick(page, e)}>{page}</a> */}
                             </li>
                         );
                     // }

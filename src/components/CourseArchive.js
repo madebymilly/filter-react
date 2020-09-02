@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Switch, Route, Link, BrowserRouter as Router, browserHistory } from 'react-router-dom'
+import { Switch, Route, Link, BrowserRouter as Router, browserHistory, useParams, useLocation } from 'react-router-dom'
 // const { Component, render, useState } = wp.element;
 import Filter from './Filter';
 import ResultNumber from './ResultNumber';
@@ -249,11 +249,11 @@ class CourseArchive extends Component {
     // Conditional rendering:
     let filter;
     if ( isFilterOpen ) {
-      filter = <Filter 
-        close={close} 
-        reset={reset} 
-        activateFilterItem={activateFilterItem} 
-        filterItems={items} 
+      filter = <Filter
+        close={close}
+        reset={reset}
+        activateFilterItem={activateFilterItem}
+        filterItems={items}
         resultNumber={resultNumber}
       />
     }
@@ -268,9 +268,9 @@ class CourseArchive extends Component {
         currentPage={currentPage}
       />
 
-      // pagination = 
-      //   <Route exact path="/" component={() => 
-      //     <Pagination 
+      // pagination =
+      //   <Route exact path="/" component={() =>
+      //     <Pagination
       //       pagination={settings.pagination}
       //       totalRecords={resultNumber}
       //       pageLimit={8}
